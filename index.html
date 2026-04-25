@@ -3,152 +3,174 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Login</title>
+<title>Login Premium</title>
 
 <style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial, sans-serif;
+}
+
 body{
-  margin:0;
-  font-family:Arial;
-  color:#fff;
-  transition:0.5s;
+background:
+linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
+url("fundo.png") center/cover no-repeat;
+color:#fff;
+height:100vh;
+overflow:hidden;
 }
 
-/* =========================
-   BACKGROUNDS
-========================= */
-.bg1{
-  background-image: url("fundo.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.bg2{
-  background: 
-    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
-    url("fundo.jpg");
-
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
-
-.bg3{
-  background-image: url("fundo.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  animation: zoomBg 20s infinite alternate;
-}
-
-@keyframes zoomBg{
-  from{transform:scale(1)}
-  to{transform:scale(1.1)}
-}
-
-/* =========================
-   BOTÕES DE TROCA
-========================= */
-.switcher{
-  position:fixed;
-  top:15px;
-  left:15px;
-  display:flex;
-  gap:10px;
-  z-index:1000;
-}
-
-.switcher button{
-  padding:8px 12px;
-  border:none;
-  border-radius:8px;
-  cursor:pointer;
-  background:#00c853;
-  color:#fff;
-  font-size:12px;
-}
-
-/* =========================
-   LOGIN
-========================= */
 #loginBox{
 position:fixed;
 inset:0;
 display:flex;
 justify-content:center;
 align-items:center;
-background:rgba(0,0,0,0.4);
+background:radial-gradient(circle at top,rgba(15,107,99,.35),rgba(0,0,0,.9));
 z-index:999;
 }
 
 .login-card{
-width:340px;
-background:rgba(20,20,20,0.75);
-backdrop-filter:blur(10px);
-padding:25px;
-border-radius:15px;
+width:380px;
+background:rgba(255,255,255,0.08);
+backdrop-filter:blur(18px);
+-webkit-backdrop-filter:blur(18px);
+padding:35px;
+border-radius:22px;
 text-align:center;
-box-shadow:0 0 25px rgba(0,0,0,0.5);
+box-shadow:
+0 15px 45px rgba(0,0,0,.55),
+0 0 20px rgba(0,200,83,.15);
+border:1px solid rgba(255,255,255,.08);
+animation:fadeIn .6s ease;
+}
+
+.logo{
+width:75px;
+height:75px;
+margin:0 auto 20px;
+border-radius:50%;
+background:linear-gradient(45deg,#00c853,#00e676);
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+box-shadow:0 0 25px rgba(0,200,83,.45);
+}
+
+h3{
+margin-bottom:25px;
+font-size:24px;
+font-weight:bold;
 }
 
 .login-card input{
-margin-bottom:10px;
-border-radius:8px;
-padding:10px;
 width:100%;
+padding:14px;
+margin-bottom:14px;
 border:none;
 outline:none;
+border-radius:12px;
+background:rgba(255,255,255,.12);
+color:#fff;
+font-size:15px;
+transition:.3s;
+}
+
+.login-card input::placeholder{
+color:rgba(255,255,255,.65);
+}
+
+.login-card input:focus{
+background:rgba(255,255,255,.18);
+transform:scale(1.02);
+box-shadow:0 0 10px rgba(0,200,83,.25);
 }
 
 .login-card button{
 width:100%;
-padding:10px;
-border-radius:8px;
-background:#00c853;
-color:#fff;
+padding:14px;
 border:none;
+border-radius:12px;
+background:linear-gradient(45deg,#00c853,#00e676);
+color:#fff;
+font-size:16px;
+font-weight:bold;
 cursor:pointer;
+transition:.3s;
+box-shadow:0 0 15px rgba(0,200,83,.35);
+}
+
+.login-card button:hover{
+transform:translateY(-2px);
+box-shadow:0 0 25px rgba(0,200,83,.55);
+}
+
+.login-row{
+display:flex;
+align-items:center;
+justify-content:space-between;
+font-size:13px;
+margin-bottom:18px;
+opacity:.9;
 }
 
 .eye{
 position:absolute;
-right:10px;
+right:14px;
 top:50%;
 transform:translateY(-50%);
 cursor:pointer;
+font-size:18px;
 }
 
-.login-row{
-font-size:12px;
-text-align:left;
-margin-bottom:10px;
+#msg{
+margin-top:15px;
+font-size:14px;
+font-weight:bold;
+min-height:20px;
+}
+
+@keyframes fadeIn{
+from{
+transform:translateY(35px);
+opacity:0;
+}
+to{
+transform:translateY(0);
+opacity:1;
+}
+}
+
+@media(max-width:420px){
+.login-card{
+width:92%;
+padding:25px;
+}
 }
 </style>
 </head>
 
-<!-- COMEÇA COM BG2 -->
-<body class="bg2">
-
-<!-- 🔥 BOTÕES PARA TROCAR FUNDO -->
-<div class="switcher">
-  <button onclick="setBg('bg1')">Fundo 1</button>
-  <button onclick="setBg('bg2')">Fundo 2</button>
-  <button onclick="setBg('bg3')">Fundo 3</button>
-</div>
+<body>
 
 <div id="loginBox">
   <div class="login-card">
-    <h3>🔐 Acesso ao Sistema</h3>
+
+    <div class="logo">🔐</div>
+
+    <h3>Acesso ao Sistema</h3>
 
     <input id="email" type="email" placeholder="Digite seu email">
 
     <div style="position:relative">
-      <input id="password" type="password" placeholder="Digite  sua senha">
+      <input id="password" type="password" placeholder="Digite sua senha">
       <span class="eye" onclick="toggleSenha()">👁️</span>
     </div>
 
     <div class="login-row">
-      <label>
+      <label style="display:flex;align-items:center;gap:6px;">
         <input type="checkbox" id="lembrar">
         Lembrar dados
       </label>
@@ -156,17 +178,28 @@ margin-bottom:10px;
 
     <button onclick="login()">Entrar</button>
     <p id="msg"></p>
+
   </div>
 </div>
 
 <script>
+// ENTER PARA LOGAR
+document.addEventListener("keydown", function(e){
+  if(e.key === "Enter"){
+    login();
+  }
+});
 
-// 🔥 TROCAR BACKGROUND
-function setBg(bg){
-  document.body.className = bg;
-}
+// CARREGAR EMAIL SALVO
+window.onload = function(){
+  const emailSalvo = localStorage.getItem("email");
+  if(emailSalvo){
+    document.getElementById("email").value = emailSalvo;
+    document.getElementById("lembrar").checked = true;
+  }
+};
 
-// SENHA
+// MOSTRAR / OCULTAR SENHA
 function toggleSenha(){
   const p = document.getElementById("password");
   const eye = document.querySelector(".eye");
@@ -180,13 +213,146 @@ function toggleSenha(){
   }
 }
 
-// LOGIN SIMPLES
+// LOGIN
 function login(){
-  document.getElementById("msg").innerText = "Login realizado ✅";
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("password").value;
+  const lembrar = document.getElementById("lembrar").checked;
+
+  if(!email || !senha){
+    document.getElementById("msg").innerText = "Preencha todos os campos";
+    return;
+  }
+
+  if(lembrar){
+    localStorage.setItem("email", email);
+  } else {
+    localStorage.removeItem("email");
+  }
+
+  document.getElementById("msg").innerText = "Login clicado";
 }
+</script>
+
+<script>
+// SALVAR SENHA + AUTOLOAD
+window.addEventListener("load", ()=>{
+  const senhaSalva = localStorage.getItem("senha");
+  if(senhaSalva){
+    document.getElementById("password").value = senhaSalva;
+  }
+
+  document.getElementById("email").focus();
+});
+
+// LIMPAR MSG AO DIGITAR
+document.querySelectorAll("input").forEach(i=>{
+  i.addEventListener("input", ()=> document.getElementById("msg").innerText = "");
+});
+
+// VALIDAÇÕES
+function emailValido(email){
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
+
+function senhaValida(senha){
+  return senha.length >= 4;
+}
+
+// LOADING
+function setLoading(state){
+  const btn = document.querySelector("button");
+  btn.disabled = state;
+  btn.innerText = state ? "Entrando..." : "Entrar";
+}
+
+// MSG PADRÃO
+function msg(t){
+document.getElementById("msg").innerText = t;
+}
+
+// CAPS LOCK
+document.getElementById("password").addEventListener("keyup", function(e){
+  if(e.getModifierState("CapsLock")){
+    msg("Caps Lock ativado ⚠️");
+  }
+});
+
+// TENTATIVAS
+let tentativas = 0;
+
+function bloquear(){
+  setLoading(true);
+  msg("Muitas tentativas. Aguarde...");
+  setTimeout(()=>{
+    tentativas = 0;
+    setLoading(false);
+    msg("");
+  },5000);
+}
+
+// LOGIN MELHORADO
+const baseLogin = login;
+
+login = function(){
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("password").value;
+  const lembrar = document.getElementById("lembrar").checked;
+
+  if(!emailValido(email)){
+    msg("Email inválido");
+    return;
+  }
+
+  if(!senhaValida(senha)){
+    msg("Senha muito curta");
+    return;
+  }
+
+  tentativas++;
+  if(tentativas >= 5){
+    bloquear();
+    return;
+  }
+
+  setLoading(true);
+
+  setTimeout(()=>{
+    if(lembrar){
+      localStorage.setItem("email", email);
+      localStorage.setItem("senha", senha);
+    } else {
+      localStorage.removeItem("email");
+      localStorage.removeItem("senha");
+    }
+
+    msg("Login realizado com sucesso ✅");
+    setLoading(false);
+  },1000);
+};
+
+// COLAR EMAIL
+document.getElementById("email").addEventListener("dblclick", async ()=>{
+  try{
+    const text = await navigator.clipboard.readText();
+    document.getElementById("email").value = text;
+  }catch{}
+});
+
+// ESC LIMPA
+document.addEventListener("keydown", e=>{
+  if(e.key === "Escape"){
+    document.getElementById("email").value = "";
+    document.getElementById("password").value = "";
+    msg("Campos limpos");
+  }
+});
+
+// INTERNET
+window.addEventListener("offline", ()=> msg("Sem internet ❌"));
+window.addEventListener("online", ()=> msg("Conectado novamente ✅"));
 
 </script>
 
 </body>
-</html>/body>
 </html>
