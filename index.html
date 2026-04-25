@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Login</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  color:#fff;
+  transition:0.5s;
+}
+
+/* =========================
+   BACKGROUNDS
+========================= */
+.bg1{
+  background-image: url("fundo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg2{
+  background: 
+    linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+    url("fundo.jpg");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.bg3{
+  background-image: url("fundo.jpg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  animation: zoomBg 20s infinite alternate;
+}
+
+@keyframes zoomBg{
+  from{transform:scale(1)}
+  to{transform:scale(1.1)}
+}
+
+/* =========================
+   BOTÕES DE TROCA
+========================= */
+.switcher{
+  position:fixed;
+  top:15px;
+  left:15px;
+  display:flex;
+  gap:10px;
+  z-index:1000;
+}
+
+.switcher button{
+  padding:8px 12px;
+  border:none;
+  border-radius:8px;
+  cursor:pointer;
+  background:#00c853;
+  color:#fff;
+  font-size:12px;
+}
+
+/* =========================
+   LOGIN
+========================= */
+#loginBox{
+position:fixed;
+inset:0;
+display:flex;
+justify-content:center;
+align-items:center;
+background:rgba(0,0,0,0.4);
+z-index:999;
+}
+
+.login-card{
+width:340px;
+background:rgba(20,20,20,0.75);
+backdrop-filter:blur(10px);
+padding:25px;
+border-radius:15px;
+text-align:center;
+box-shadow:0 0 25px rgba(0,0,0,0.5);
+}
+
+.login-card input{
+margin-bottom:10px;
+border-radius:8px;
+padding:10px;
+width:100%;
+border:none;
+outline:none;
+}
+
+.login-card button{
+width:100%;
+padding:10px;
+border-radius:8px;
+background:#00c853;
+color:#fff;
+border:none;
+cursor:pointer;
+}
+
+.eye{
+position:absolute;
+right:10px;
+top:50%;
+transform:translateY(-50%);
+cursor:pointer;
+}
+
+.login-row{
+font-size:12px;
+text-align:left;
+margin-bottom:10px;
+}
+</style>
+</head>
+
+<!-- COMEÇA COM BG2 -->
+<body class="bg2">
+
+<!-- 🔥 BOTÕES PARA TROCAR FUNDO -->
+<div class="switcher">
+  <button onclick="setBg('bg1')">Fundo 1</button>
+  <button onclick="setBg('bg2')">Fundo 2</button>
+  <button onclick="setBg('bg3')">Fundo 3</button>
+</div>
+
+<div id="loginBox">
+  <div class="login-card">
+    <h3>🔐 Acesso ao Sistema</h3>
+
+    <input id="email" type="email" placeholder="Digite seu email">
+
+    <div style="position:relative">
+      <input id="password" type="password" placeholder="Digite  sua senha">
+      <span class="eye" onclick="toggleSenha()">👁️</span>
+    </div>
+
+    <div class="login-row">
+      <label>
+        <input type="checkbox" id="lembrar">
+        Lembrar dados
+      </label>
+    </div>
+
+    <button onclick="login()">Entrar</button>
+    <p id="msg"></p>
+  </div>
+</div>
+
+<script>
+
+// 🔥 TROCAR BACKGROUND
+function setBg(bg){
+  document.body.className = bg;
+}
+
+// SENHA
+function toggleSenha(){
+  const p = document.getElementById("password");
+  const eye = document.querySelector(".eye");
+
+  if(p.type === "password"){
+    p.type = "text";
+    eye.innerText = "🙈";
+  } else {
+    p.type = "password";
+    eye.innerText = "👁️";
+  }
+}
+
+// LOGIN SIMPLES
+function login(){
+  document.getElementById("msg").innerText = "Login realizado ✅";
+}
+
+</script>
+
+</body>
+</html>/body>
+</html>
