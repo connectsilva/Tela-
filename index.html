@@ -10,13 +10,13 @@
 margin:0;
 padding:0;
 box-sizing:border-box;
-font-family:Arial, sans-serif;
+font-family:Arial,sans-serif;
 }
 
 body{
 background:
 linear-gradient(rgba(0,0,0,.75),rgba(0,0,0,.75)),
-url("fundo.png") center/cover no-repeat;
+url("findo.png") center/cover no-repeat;
 color:#fff;
 height:100vh;
 overflow:hidden;
@@ -34,7 +34,7 @@ z-index:999;
 
 .login-card{
 width:380px;
-background:rgba(255,255,255,0.08);
+background:rgba(255,255,255,.08);
 backdrop-filter:blur(18px);
 -webkit-backdrop-filter:blur(18px);
 padding:35px;
@@ -66,7 +66,9 @@ font-size:24px;
 font-weight:bold;
 }
 
-.login-card input{
+/* CAMPOS FIXOS (NÃO MUDA AO TROCAR TYPE) */
+#email,
+#password{
 width:100%;
 padding:14px;
 margin-bottom:14px;
@@ -79,14 +81,16 @@ font-size:15px;
 transition:.3s;
 }
 
-.login-card input::placeholder{
-color:rgba(255,255,255,.65);
-}
-
-.login-card input:focus{
+/* FOCUS FIXO */
+#email:focus,
+#password:focus{
 background:rgba(255,255,255,.18);
 transform:scale(1.02);
 box-shadow:0 0 10px rgba(0,200,83,.25);
+}
+
+input::placeholder{
+color:rgba(255,255,255,.65);
 }
 
 .login-card button{
@@ -111,10 +115,22 @@ box-shadow:0 0 25px rgba(0,200,83,.55);
 .login-row{
 display:flex;
 align-items:center;
-justify-content:space-between;
-font-size:13px;
-margin-bottom:18px;
-opacity:.9;
+justify-content:flex-start;
+font-size:14px;
+margin:8px 0 14px 0;
+}
+
+.login-row label{
+display:flex;
+align-items:center;
+gap:8px;
+cursor:pointer;
+}
+
+.login-row input[type="checkbox"]{
+width:16px;
+height:16px;
+margin:0;
 }
 
 .eye{
@@ -124,6 +140,12 @@ top:50%;
 transform:translateY(-50%);
 cursor:pointer;
 font-size:18px;
+width:24px;
+height:24px;
+display:flex;
+align-items:center;
+justify-content:center;
+user-select:none;
 }
 
 #msg{
@@ -164,19 +186,20 @@ padding:25px;
 
     <input id="email" type="email" placeholder="Digite seu email">
 
-    <div style="position:relative">
-      <input id="password" type="password" placeholder="Digite sua senha">
-      <span class="eye" onclick="toggleSenha()">👁️</span>
-    </div>
-
     <div class="login-row">
-      <label style="display:flex;align-items:center;gap:6px;">
+      <label>
         <input type="checkbox" id="lembrar">
-        Lembrar dados
+        <span>Lembrar dados</span>
       </label>
     </div>
 
+    <div style="position:relative">
+      <input id="password" type="password" placeholder="Digite sua senha">
+      <span class="eye" onclick="toggleSenha()">👁</span>
+    </div>
+
     <button onclick="login()">Entrar</button>
+
     <p id="msg"></p>
 
   </div>
@@ -193,6 +216,7 @@ document.addEventListener("keydown", function(e){
 // CARREGAR EMAIL SALVO
 window.onload = function(){
   const emailSalvo = localStorage.getItem("email");
+
   if(emailSalvo){
     document.getElementById("email").value = emailSalvo;
     document.getElementById("lembrar").checked = true;
@@ -206,14 +230,14 @@ function toggleSenha(){
 
   if(p.type === "password"){
     p.type = "text";
-    eye.innerText = "🙈";
-  } else {
+    eye.innerHTML = "◉";
+  }else{
     p.type = "password";
-    eye.innerText = "👁️";
+    eye.innerHTML = "👁";
   }
 }
 
-// LOGIN
+// LOGIN BASE
 function login(){
   const email = document.getElementById("email").value;
   const senha = document.getElementById("password").value;
@@ -226,7 +250,7 @@ function login(){
 
   if(lembrar){
     localStorage.setItem("email", email);
-  } else {
+  }else{
     localStorage.removeItem("email");
   }
 
@@ -235,9 +259,10 @@ function login(){
 </script>
 
 <script>
-// SALVAR SENHA + AUTOLOAD
+// AUTOLOAD SENHA
 window.addEventListener("load", ()=>{
   const senhaSalva = localStorage.getItem("senha");
+
   if(senhaSalva){
     document.getElementById("password").value = senhaSalva;
   }
@@ -247,28 +272,31 @@ window.addEventListener("load", ()=>{
 
 // LIMPAR MSG AO DIGITAR
 document.querySelectorAll("input").forEach(i=>{
-  i.addEventListener("input", ()=> document.getElementById("msg").innerText = "");
+  i.addEventListener("input", ()=>{
+    document.getElementById("msg").innerText = "";
+  });
 });
 
-// VALIDAÇÕES
+// VALIDAR EMAIL
 function emailValido(email){
   return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
 
+// VALIDAR SENHA
 function senhaValida(senha){
   return senha.length >= 4;
 }
 
-// LOADING
+// LOADING BOTÃO
 function setLoading(state){
   const btn = document.querySelector("button");
   btn.disabled = state;
   btn.innerText = state ? "Entrando..." : "Entrar";
 }
 
-// MSG PADRÃO
+// MENSAGENS
 function msg(t){
-document.getElementById("msg").innerText = t;
+  document.getElementById("msg").innerText = t;
 }
 
 // CAPS LOCK
@@ -278,12 +306,13 @@ document.getElementById("password").addEventListener("keyup", function(e){
   }
 });
 
-// TENTATIVAS
+// CONTROLE DE TENTATIVAS
 let tentativas = 0;
 
 function bloquear(){
   setLoading(true);
   msg("Muitas tentativas. Aguarde...");
+
   setTimeout(()=>{
     tentativas = 0;
     setLoading(false);
@@ -295,8 +324,8 @@ function bloquear(){
 const baseLogin = login;
 
 login = function(){
-  const email = document.getElementById("email").value;
-  const senha = document.getElementById("password").value;
+  const email = document.getElementById("email").value.trim();
+  const senha = document.getElementById("password").value.trim();
   const lembrar = document.getElementById("lembrar").checked;
 
   if(!emailValido(email)){
@@ -310,6 +339,7 @@ login = function(){
   }
 
   tentativas++;
+
   if(tentativas >= 5){
     bloquear();
     return;
@@ -321,7 +351,7 @@ login = function(){
     if(lembrar){
       localStorage.setItem("email", email);
       localStorage.setItem("senha", senha);
-    } else {
+    }else{
       localStorage.removeItem("email");
       localStorage.removeItem("senha");
     }
@@ -339,7 +369,7 @@ document.getElementById("email").addEventListener("dblclick", async ()=>{
   }catch{}
 });
 
-// ESC LIMPA
+// ESC LIMPA CAMPOS
 document.addEventListener("keydown", e=>{
   if(e.key === "Escape"){
     document.getElementById("email").value = "";
@@ -348,11 +378,16 @@ document.addEventListener("keydown", e=>{
   }
 });
 
-// INTERNET
-window.addEventListener("offline", ()=> msg("Sem internet ❌"));
-window.addEventListener("online", ()=> msg("Conectado novamente ✅"));
+// STATUS INTERNET
+window.addEventListener("offline", ()=>{
+  msg("Sem internet ❌");
+});
 
+window.addEventListener("online", ()=>{
+  msg("Conectado novamente ✅");
+});
 </script>
 
 </body>
+</html>/body>
 </html>
