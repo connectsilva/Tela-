@@ -236,6 +236,24 @@ font-size:15px;
 <div class="box">💰 Pagas<br><span id="dPagas">0</span></div>
 <div class="box">⚠️ Atraso<br><span id="dAtraso">0</span></div>
 <div class="box">📉 Inad<br><span id="dInad">0%</span></div>
+
+<!-- APPEND ONLY: BACKUP -->
+<div class="box">
+<button class="btn" onclick="fazerBackup()">📦 Backup</button>
+</div>
+
+<div class="box">
+<button class="btn-warning" onclick="document.getElementById('restoreFile').click()">
+📥 Restaurar
+</button>
+
+<input
+id="restoreFile"
+type="file"
+accept=".json"
+style="display:none"
+onchange="restaurarBackup(event)">
+</div>
 </div>
 
 <div class="card">
@@ -288,30 +306,30 @@ margin-top:30px;
 box-sizing:border-box;
 ">
 
-    <p style="
-    margin:0;
-    font-size:18px;
-    font-weight:bold;
-    color:#ffffff;
-    ">
-        Gestão Financeira
-    </p>
+<p style="
+margin:0;
+font-size:18px;
+font-weight:bold;
+color:#ffffff;
+">
+Gestão Financeira
+</p>
 
-    <p style="
-    margin:4px 0;
-    font-size:13px;
-    color:#cccccc;
-    ">
-        Versão 2.5
-    </p>
+<p style="
+margin:4px 0;
+font-size:13px;
+color:#cccccc;
+">
+Versão 2.5
+</p>
 
-    <p style="
-    margin:4px 0;
-    font-size:12px;
-    color:#999999;
-    ">
-        © 2026 Todos os direitos reservados
-    </p>
+<p style="
+margin:4px 0;
+font-size:12px;
+color:#999999;
+">
+© 2026 Todos os direitos reservados
+</p>
 
 </footer>
 
@@ -390,6 +408,63 @@ render()
 function excluirAluno(i){if(!confirm("Deseja realmente excluir este aluno?")) return;alunos.splice(i,1);salvar();render()}
 
 function editarAluno(i){let a=alunos[i];$("nome").value=a.nome;$("apelido").value=a.apelido||"";$("valor").value=a.valor;$("tel").value=a.tel||"";$("meses").value=a.parcelas.length;let primeira=a.parcelas[0].data.split("/");$("venc").value=`${primeira[2]}-${primeira[1]}-${primeira[0]}`;editandoIndex=i;$("btnSalvar").innerText="Atualizar";$("form").classList.add("ativo");window.scrollTo({top:$("form").offsetTop-20,behavior:"smooth"})}
+
+/* APPEND ONLY: BACKUP */
+function fazerBackup(){
+let dados={
+data:new Date().toISOString(),
+alunos:alunos
+}
+
+let blob=new Blob(
+[JSON.stringify(dados,null,2)],
+{type:"application/json"}
+)
+
+let url=URL.createObjectURL(blob)
+
+let a=document.createElement("a")
+a.href=url
+a.download=`backup-capoeira-${Date.now()}.json`
+a.click()
+
+URL.revokeObjectURL(url)
+}
+
+function restaurarBackup(event){
+let arquivo=event.target.files[0]
+
+if(!arquivo) return
+
+let reader=new FileReader()
+
+reader.onload=function(e){
+try{
+let dados=JSON.parse(e.target.result)
+
+if(!dados.alunos){
+alert("Backup inválido")
+return
+}
+
+if(!confirm("Deseja restaurar o backup? Isso substituirá os dados atuais.")){
+return
+}
+
+alunos=dados.alunos
+
+salvar()
+render()
+
+alert("Backup restaurado com sucesso!")
+
+}catch{
+alert("Erro ao restaurar backup")
+}
+}
+
+reader.readAsText(arquivo)
+}
 </script>
 
 <script>
@@ -399,52 +474,52 @@ if("serviceWorker" in navigator){navigator.serviceWorker.register("service-worke
 <!-- APPEND ONLY: LOGIN JS -->
 <script>
 window.addEventListener("load", ()=>{
-  const emailSalvo = localStorage.getItem("email");
-  const senhaSalva = localStorage.getItem("senha");
-  if(emailSalvo){document.getElementById("email").value=emailSalvo;document.getElementById("lembrar").checked=true}
-  if(senhaSalva){document.getElementById("password").value=senhaSalva}
+const emailSalvo = localStorage.getItem("email");
+const senhaSalva = localStorage.getItem("senha");
+if(emailSalvo){document.getElementById("email").value=emailSalvo;document.getElementById("lembrar").checked=true}
+if(senhaSalva){document.getElementById("password").value=senhaSalva}
 })
 
 function toggleSenha(){
-  const p=document.getElementById("password")
-  const eye=document.querySelector(".eye")
-  if(p.type==="password"){
-    p.type="text"
-    eye.innerHTML="◉"
-  }else{
-    p.type="password"
-    eye.innerHTML="👁"
-  }
+const p=document.getElementById("password")
+const eye=document.querySelector(".eye")
+if(p.type==="password"){
+p.type="text"
+eye.innerHTML="◉"
+}else{
+p.type="password"
+eye.innerHTML="👁"
+}
 }
 
 function loginSistema(){
-  const email=document.getElementById("email").value.trim()
-  const senha=document.getElementById("password").value.trim()
-  const lembrar=document.getElementById("lembrar").checked
+const email=document.getElementById("email").value.trim()
+const senha=document.getElementById("password").value.trim()
+const lembrar=document.getElementById("lembrar").checked
 
-  if(!email||!senha){
-    document.getElementById("msg").innerText="Preencha todos os campos"
-    return
-  }
+if(!email||!senha){
+document.getElementById("msg").innerText="Preencha todos os campos"
+return
+}
 
-  if(lembrar){
-    localStorage.setItem("email",email)
-    localStorage.setItem("senha",senha)
-  }else{
-    localStorage.removeItem("email")
-    localStorage.removeItem("senha")
-  }
+if(lembrar){
+localStorage.setItem("email",email)
+localStorage.setItem("senha",senha)
+}else{
+localStorage.removeItem("email")
+localStorage.removeItem("senha")
+}
 
-  document.getElementById("loginBox").style.display="none"
+document.getElementById("loginBox").style.display="none"
 }
 
 document.addEventListener("keydown", function(e){
-  if(e.key==="Enter"){
-    const loginAberto=document.getElementById("loginBox")
-    if(loginAberto && loginAberto.style.display!=="none"){
-      loginSistema()
-    }
-  }
+if(e.key==="Enter"){
+const loginAberto=document.getElementById("loginBox")
+if(loginAberto && loginAberto.style.display!=="none"){
+loginSistema()
+}
+}
 })
 </script>
 
